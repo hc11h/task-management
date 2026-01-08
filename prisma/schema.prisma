@@ -1,0 +1,43 @@
+// prisma/schema.prisma
+
+generator client {
+  provider   = "prisma-client"
+  output     = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  role      UserRole @default(EMPLOYEE)
+  tasks     Task[]   // One user has many tasks
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  status      TaskStatus @default(PENDING)
+  assignee    User?      @relation(fields: [assigneeId], references: [id]) // Many-to-One
+  assigneeId  Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
