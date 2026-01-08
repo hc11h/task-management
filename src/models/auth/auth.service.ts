@@ -1,4 +1,8 @@
-import { Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  UnauthorizedException,
+} from '@nestjs/common';
 import bcrypt from 'bcrypt';
 import type { IAUthRepository } from './interfaces/auth.repository.interface';
 import crypto from 'crypto';
@@ -31,6 +35,9 @@ export class AuthService {
   }
 
   async login(loginDto: { username: string; password: string }) {
+    if (!loginDto || !loginDto.username || !loginDto.password) {
+      throw new BadRequestException('username and password required');
+    }
     const user = await this.validateUser(loginDto.username, loginDto.password);
 
     const token = this.signJwt({
