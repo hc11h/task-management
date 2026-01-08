@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaPg } from '@prisma/adapter-pg'; 
+import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -8,7 +8,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     super({ adapter: pool });
   }
   async onModuleInit() {
-    // Note: this is optional
     await this.$connect();
   }
 }
