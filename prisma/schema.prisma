@@ -1,13 +1,13 @@
 // prisma/schema.prisma
 
 generator client {
-  provider   = "prisma-client"
-  output     = "./generated"
+  provider   = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
 }
+
 
 enum UserRole {
   ADMIN
@@ -23,8 +23,9 @@ enum TaskStatus {
 
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id @default(uuid())
   username  String   @unique
+  password  String
   role      UserRole @default(EMPLOYEE)
   tasks     Task[]   // One user has many tasks
   createdAt DateTime @default(now())
